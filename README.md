@@ -23,9 +23,9 @@ It contains daily stock price data for the period 2000 – 2008. I chose this pe
 
 The period 2000 – 2008 yields 2,923 timestamped observations and 2485 stocks. This data must be filtered in the following ways:
 
-•	Stocks must have price values for the entire date range, and those that lack the full range of values must be removed. 
-•	Non-trading days that have NaN values (represented with -1) must be removed for all stocks. 
-•	The dataset has some noise in it. In particular, non-trading days sometimes have tiny unexpected values. Thus if any day is found containing NaN values for almost all stocks, that day will be considered a non-trading day and will be removed from the dataset, even if some small portion of the stocks have a value other than NaN for that day. 
+* Stocks must have price values for the entire date range, and those that lack the full range of values must be removed. 
+* Non-trading days that have NaN values (represented with -1) must be removed for all stocks. 
+* The dataset has some noise in it. In particular, non-trading days sometimes have tiny unexpected values. Thus if any day is found containing NaN values for almost all stocks, that day will be considered a non-trading day and will be removed from the dataset, even if some small portion of the stocks have a value other than NaN for that day. 
 •	For those tests that use fundamental data, the intersection must be found between the Quandl price data and the Intrinio fundamentals data. Both datasets are supposed to be market-wide, yet they do not contain the exact same set of stocks. Thus stocks present in one set or the other but not both must be removed. 
 •	Opening prices must be subtracting from closing prices to calculate the daily price change and then this must be converted into a daily percentage change to yield daily returns
 
