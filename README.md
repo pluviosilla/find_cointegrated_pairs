@@ -26,8 +26,8 @@ The period 2000 – 2008 yields 2,923 timestamped observations and 2485 stocks. 
 * Stocks must have price values for the entire date range, and those that lack the full range of values must be removed. 
 * Non-trading days that have NaN values (represented with -1) must be removed for all stocks. 
 * The dataset has some noise in it. In particular, non-trading days sometimes have tiny unexpected values. Thus if any day is found containing NaN values for almost all stocks, that day will be considered a non-trading day and will be removed from the dataset, even if some small portion of the stocks have a value other than NaN for that day. 
-•	For those tests that use fundamental data, the intersection must be found between the Quandl price data and the Intrinio fundamentals data. Both datasets are supposed to be market-wide, yet they do not contain the exact same set of stocks. Thus stocks present in one set or the other but not both must be removed. 
-•	Opening prices must be subtracting from closing prices to calculate the daily price change and then this must be converted into a daily percentage change to yield daily returns
+* For those tests that use fundamental data, the intersection must be found between the Quandl price data and the Intrinio fundamentals data. Both datasets are supposed to be market-wide, yet they do not contain the exact same set of stocks. Thus stocks present in one set or the other but not both must be removed. 
+* Opening prices must be subtracting from closing prices to calculate the daily price change and then this must be converted into a daily percentage change to yield daily returns
 
 After filtering the data I was left with 2009 daily returns for 1,797 stocks.
 
@@ -35,11 +35,11 @@ After filtering the data I was left with 2009 daily returns for 1,797 stocks.
 
 When trying to find potentially cointegratable pairs, one confronts the following problems:
 
-(1)	Problem of confounding variables: Sometimes variables appear to be related but their relationship to one another consists solely in the mutual relationship they have to a third variable. This third variable is called a confounding variable, because it “confounds” (or confuses) the proper analysis of the other two variables and their relationship to one another. A good textbook example of this is the relationship of heat and smoke to fire. Both heat and smoke appear to be strongly correlated, but in truth heat does not produce smoke nor does smoke produce heat. Both are dependent on a third variable, fire. In the stock market, the most obvious example of a confounding variable is the market beta discussed above. Cointegration tests, in particular, can produce spurious results because of market beta, leading the analyst to believe that stocks are cointegrated when they are not.
-(2)	Problem with sector pairs: The most obvious choices for pairs are found by trying pairs in the same industry sector, because the prices of stocks in the same industry do tend to change in tandem, but this strategy is very well known among stock investors and a lot of people are already using it. That tends to erode any arbitrage opportunity. To find less obvious cointegrated pairs you need to cast your net wider and test pairs that straddle industry sectors. But that leads to a different problem: the problem of a large number of features.
-(3)	Problem of large numbers of features: Any test for pairs over large numbers of stocks will confront the problem of the number of features exceeding the number of observations (time slices), because this can lead to ill-conditioned empirical covariance matrices. One can remedy this by increasing the time span over which one analyzes price data, thus increasing the number of observations. But that leads to yet another problem: the problem of using long periods of stock data as though it were homogeneous in its properties when, in fact, it almost never is.
-(4)	Problem of using lengthy time series: Using price series that span more than 10 years carries a risk for the integrity of the data. Stocks can be de-listed, so-called survivorship bias can become a problem, and longer time spans are more like to straddle market regime changes (bull market to bear market, etc.) and that can undermine statistical inference. Risk management applications often restrict covariance estimations to recent data that spans 3 years or less.
-(5)	Problem of multiple comparisons bias: Finally, since tests for cointegration like Augmented Dickey Fuller use a significance level (typically of 5%) to measure whether a pair should be considered mean reverting or not, these tests suffer from multiple comparisons bias. This problem arises when you run such a large number of tests that on average your tests will produce false positives simply by virtue of the fact that tests of pairs that are not cointegrated will still satisfy the significance level 5% of the time. If you run 10,000 tests, for example, that could yield as many as 500 false positives, and if there are very few cases of real cointegration, the false positives could actually dominate the results.
+1.	Problem of confounding variables: Sometimes variables appear to be related but their relationship to one another consists solely in the mutual relationship they have to a third variable. This third variable is called a confounding variable, because it “confounds” (or confuses) the proper analysis of the other two variables and their relationship to one another. A good textbook example of this is the relationship of heat and smoke to fire. Both heat and smoke appear to be strongly correlated, but in truth heat does not produce smoke nor does smoke produce heat. Both are dependent on a third variable, fire. In the stock market, the most obvious example of a confounding variable is the market beta discussed above. Cointegration tests, in particular, can produce spurious results because of market beta, leading the analyst to believe that stocks are cointegrated when they are not.
+2.	Problem with sector pairs: The most obvious choices for pairs are found by trying pairs in the same industry sector, because the prices of stocks in the same industry do tend to change in tandem, but this strategy is very well known among stock investors and a lot of people are already using it. That tends to erode any arbitrage opportunity. To find less obvious cointegrated pairs you need to cast your net wider and test pairs that straddle industry sectors. But that leads to a different problem: the problem of a large number of features.
+3.	Problem of large numbers of features: Any test for pairs over large numbers of stocks will confront the problem of the number of features exceeding the number of observations (time slices), because this can lead to ill-conditioned empirical covariance matrices. One can remedy this by increasing the time span over which one analyzes price data, thus increasing the number of observations. But that leads to yet another problem: the problem of using long periods of stock data as though it were homogeneous in its properties when, in fact, it almost never is.
+4.	Problem of using lengthy time series: Using price series that span more than 10 years carries a risk for the integrity of the data. Stocks can be de-listed, so-called survivorship bias can become a problem, and longer time spans are more like to straddle market regime changes (bull market to bear market, etc.) and that can undermine statistical inference. Risk management applications often restrict covariance estimations to recent data that spans 3 years or less.
+5.	Problem of multiple comparisons bias: Finally, since tests for cointegration like Augmented Dickey Fuller use a significance level (typically of 5%) to measure whether a pair should be considered mean reverting or not, these tests suffer from multiple comparisons bias. This problem arises when you run such a large number of tests that on average your tests will produce false positives simply by virtue of the fact that tests of pairs that are not cointegrated will still satisfy the significance level 5% of the time. If you run 10,000 tests, for example, that could yield as many as 500 false positives, and if there are very few cases of real cointegration, the false positives could actually dominate the results.
 How do we solve these problems?
 
 # Solution Statement
@@ -80,9 +80,9 @@ Larkin’s project does not treat stocks as features when it does dimension redu
 
 When used in this way, PCA has aspects in common with other techniques that can do spectral analysis like DFT (Discrete Fourier Transform), or even dimension reduction across time, like DTW (Dynamic Time Warping) and Forecastable Component Analysis (FCA or ForeCA). See the followings posts and articles for further information:
 
-o	https://stats.stackexchange.com/questions/82291/time-series-dimensionality-reduction 
-o	https://stats.stackexchange.com/questions/283521/dimensionality-reduction-of-multivariate-time-series 
-o	https://arxiv.org/abs/1205.4591
+*	https://stats.stackexchange.com/questions/82291/time-series-dimensionality-reduction 
+*	https://stats.stackexchange.com/questions/283521/dimensionality-reduction-of-multivariate-time-series 
+*	https://arxiv.org/abs/1205.4591
 
 With only 50 features, ill-conditioned covariance matrices cease to pose a problem. After doing dimension reduction, the Larkin project runs the DBSCAN to cluster stocks using principal components concatenated with stock fundamentals data as inputs instead of using the raw price data as input. The SciKit Learn project also does dimension reduction using Locally Linear Embedding, but only for purposes of 2D visualization, not as part of the clustering algorithm. 
 
@@ -91,13 +91,13 @@ With only 50 features, ill-conditioned covariance matrices cease to pose a probl
 Download project and all its data here.
 
 The project is organized as two notebooks:
-•	one with utilities for downloading and cleaning stock data and 
-•	another with routines to support the main algorithm
+*	one with utilities for downloading and cleaning stock data and 
+*	another with routines to support the main algorithm
 
 The latter notebook consists of:
-•	a section of helper functions followed by 
-•	a section that does analysis on data for the entire market followed by 
-•	a section that does analysis on data for different industry sectors
+*	a section of helper functions followed by 
+*	a section that does analysis on data for the entire market followed by 
+*	a section that does analysis on data for different industry sectors
 
 # Project Results and Conclusions
 
@@ -107,15 +107,15 @@ Here are the results of the project according to approach used.
 
 **Project Strategy**:
 
-•	Covariance estimation and regularization technique: GraphLasso
-•	Clustering technique: Affinity Propagation 
-•	Data clustered on: covariance matrix
-•	Stock universe: Entire market (1,797 stocks)
-•	Number of possible pairs in stock universe: 1,613,706
-•	Results:
-o	Number of cointegrated pairs found within clusters: 1,077
-o	Fraction (on average) of pairs tested that cointegrated: 0.151424
-o	Percentage of partially correlated pairs that cointegrated:
+*	Covariance estimation and regularization technique: GraphLasso
+*	Clustering technique: Affinity Propagation 
+*	Data clustered on: covariance matrix
+*	Stock universe: Entire market (1,797 stocks)
+*	Number of possible pairs in stock universe: 1,613,706
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 1,077
+  *	Fraction (on average) of pairs tested that cointegrated: 0.151424
+  *	Percentage of partially correlated pairs that cointegrated:
  	With a minimum partial correlation of 0.01:  25.3% (825 pairs)
  	With a minimum partial correlation of 0.1:    30.6% (15 pairs)
  	With a minimum partial correlation of 0.4:    38.5% (5 pairs) 
@@ -127,8 +127,8 @@ The highest rate of cointegration I found in any of the tests I ran was 38.5%. I
 How does this compare to the benchmark data?
 
 The cointegration success rates of 38.5% and 25.3% correspond roughly to the benchmark scores I obtained for the Energy and Technology sectors:
-•	Energy (78 stocks) produced 124 pairs with a cointegration rate of 38.4%
-•	Technology (152 stocks) produced 1,070 pairs with a cointegration rate of 26.36%
+*	Energy (78 stocks) produced 124 pairs with a cointegration rate of 38.4%
+*	Technology (152 stocks) produced 1,070 pairs with a cointegration rate of 26.36%
 
 Since our goal is to achieve cointegration success comparable with a strategy that uses sector data, these results suggest that our approach may be serviceable. 
 
@@ -137,9 +137,9 @@ The second benchmark was Jonathan Larkin’s approach, which runs a DBSCAN clust
 # Visualizations
 
 The project visualizations attempt to capture three aspects of the data:
-•	Color of stocks (dots): cluster membership
-•	Distance between stocks: similarity in time series as measured by the locally linear embedding (LLE) algorithm
-•	Thickness of edges connecting stocks: degree of positive partial correlation
+*	Color of stocks (dots): cluster membership
+*	Distance between stocks: similarity in time series as measured by the locally linear embedding (LLE) algorithm
+*	Thickness of edges connecting stocks: degree of positive partial correlation
 
 There is no way of knowing exactly why LLE would judge two stock price time series to be similar (where, again, “similarity” is indicated by closeness of the two points to one another in the 2D embedded space), but our visualizations might provide some clues.
 
@@ -168,144 +168,144 @@ Furthermore, with a change in dataset sive, the advantage of Graph Lasso over PC
 
 **Project Strategy**:
 
-•	Covariance estimation and regularization technique: GraphLasso
-•	Clustering technique: Affinity Propagation 
-•	Data clustered on: covariance matrix
-•	Stock universe: Entire market (1,797 stocks)
-•	Number of possible pairs in stock universe: 1,613,706
-•	Results:
-o	Number of cointegrated pairs found within clusters: 1,077
-o	Fraction (on average) of pairs tested that cointegrated: 0.151424
-o	Percentage of partially correlated pairs that cointegrated:
+*	Covariance estimation and regularization technique: GraphLasso
+*	Clustering technique: Affinity Propagation 
+*	Data clustered on: covariance matrix
+*	Stock universe: Entire market (1,797 stocks)
+*	Number of possible pairs in stock universe: 1,613,706
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 1,077
+  *	Fraction (on average) of pairs tested that cointegrated: 0.151424
+  *	Percentage of partially correlated pairs that cointegrated:
  	With a minimum partial correlation of 0.01:  25.3% (825 pairs)
  	With a minimum partial correlation of 0.1:    30.6% (15 pairs)
  	With a minimum partial correlation of 0.4:    38.5% (5 pairs) 
 
 **Benchmark Strategy A** (clustering on principal components): 
 
-•	Covariance estimation and regularization technique: None
-•	Clustering technique: DBSCAN 
-•	Data clustered on: Principle components and stock fundamentals
-•	Stock universe: Intersection of Quandl and Intrinio data (1,101 stocks)
-•	Number of possible pairs in stock universe: 26,241
-•	Results:
-o	Number of cointegrated pairs found within clusters: 1,906
-o	Fraction (on average) of pairs tested that cointegrated: 0.059298
+*	Covariance estimation and regularization technique: None
+*	Clustering technique: DBSCAN 
+*	Data clustered on: Principle components and stock fundamentals
+*	Stock universe: Intersection of Quandl and Intrinio data (1,101 stocks)
+*	Number of possible pairs in stock universe: 26,241
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 1,906
+  *	Fraction (on average) of pairs tested that cointegrated: 0.059298
 
 **Benchmark Strategy B** (clustering by industry sector):
 
 All tests of sector data use the following:
-•	Covariance estimation and regularization technique: GraphLasso
-•	Clustering technique: Affinity Propagation 
-•	Data clustered on: covariance matrix
+*	Covariance estimation and regularization technique: GraphLasso
+*	Clustering technique: Affinity Propagation 
+*	Data clustered on: covariance matrix
 
 **Basic Materials**
-•	Stock universe: Entire market (21 stocks) 
-•	Number of possible pairs in stock universe: 210
-•	Results:
-o	Number of cointegrated pairs found within clusters: 17
-o	Fraction (on average) of pairs tested that cointegrated: 0.21342
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (21 stocks) 
+*	Number of possible pairs in stock universe: 210
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 17
+  *	Fraction (on average) of pairs tested that cointegrated: 0.21342
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:    0% (0 pairs) 
 
 **Cyclical Consumer**
-•	Stock universe: Entire market (111 stocks) 
-•	Number of possible pairs in stock universe: 6,105 
-•	Results:
-o	Number of cointegrated pairs found within clusters: 107
-o	Fraction (on average) of pairs tested that cointegrated: 0.122808
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (111 stocks) 
+*	Number of possible pairs in stock universe: 6,105 
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 107
+  *	Fraction (on average) of pairs tested that cointegrated: 0.122808
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:    50% (2 pairs) 
 
 **Energy**
-•	Stock universe: Entire market (78 stocks) 
-•	Number of possible pairs in stock universe: 3,003
-•	Results:
-o	Number of cointegrated pairs found within clusters: 124
-o	Fraction (on average) of pairs tested that cointegrated: 0.383974
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (78 stocks) 
+*	Number of possible pairs in stock universe: 3,003
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 124
+  *	Fraction (on average) of pairs tested that cointegrated: 0.383974
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:      0% (0 pairs) 
  	With a minimum partial correlation of 0.2:    40% (2 pairs)
 
 **Financials**
-•	Stock universe: Entire market (315 stocks)
-•	Number of possible pairs in stock universe: 49,455
-•	Results:
-o	Number of cointegrated pairs found within clusters: 88
-o	Fraction (on average) of pairs tested that cointegrated: 0.10068
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (315 stocks)
+*	Number of possible pairs in stock universe: 49,455
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 88
+  *	Fraction (on average) of pairs tested that cointegrated: 0.10068
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:    0% (0 pairs) 
  	With a minimum partial correlation of 0.2:    0% (0 pairs) 
  	With a minimum partial correlation of 0.1:    4.5% (22 pairs)
 
 **Healthcare**
-•	Stock universe: Entire market (82 stocks)
-•	Number of possible pairs in stock universe: 3,321
-•	Results:
-o	Number of cointegrated pairs found within clusters: 196
-o	Fraction (on average) of pairs tested that cointegrated: 0.106253
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (82 stocks)
+*	Number of possible pairs in stock universe: 3,321
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 196
+  *	Fraction (on average) of pairs tested that cointegrated: 0.106253
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:    0% (0 pairs)
  	With a minimum partial correlation of 0.2:    0% (0 pairs)
  	With a minimum partial correlation of 0.1:    34.6% (9 pairs) 
 
 **Industrials**
-•	Stock universe: Entire market (157 stocks)
-•	Number of possible pairs in stock universe: 12,246
-•	Results:
-o	Number of cointegrated pairs found within clusters: 104
-o	Fraction (on average) of pairs tested that cointegrated: 0.112479 
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (157 stocks)
+*	Number of possible pairs in stock universe: 12,246
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 104
+  *	Fraction (on average) of pairs tested that cointegrated: 0.112479 
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:  0% (0 pairs)
  	With a minimum partial correlation of 0.2:  11.1% (9 pairs)
 
 **Non-cyclicals**
-•	Stock universe: Entire market (62 stocks)
-•	Number of possible pairs in stock universe: 1,891
-•	Results:
-o	Number of cointegrated pairs found within clusters: 26
-o	Fraction (on average) of pairs tested that cointegrated: 0.088492
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (62 stocks)
+*	Number of possible pairs in stock universe: 1,891
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 26
+  *	Fraction (on average) of pairs tested that cointegrated: 0.088492
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:   0% (0 pairs)
  	With a minimum partial correlation of 0.2:   0% (0 pairs)
  	With a minimum partial correlation of 0.05: 8.1% (8 pairs) 
 
 **Technology**
-•	Stock universe: Entire market (152 stocks)
-•	Number of possible pairs in stock universe: 11,476
-•	Results:
-o	Number of cointegrated pairs found within clusters: 1070
-o	Fraction (on average) of pairs tested that cointegrated: 0.263577
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (152 stocks)
+*	Number of possible pairs in stock universe: 11,476
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 1070
+  *	Fraction (on average) of pairs tested that cointegrated: 0.263577
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:  0% (0 pairs)
  	With a minimum partial correlation of 0.2:  0% (0 pairs)
  	With a minimum partial correlation of 0.1:  71.4% (5 pairs) 
 
 **Telecom**
-•	Stock universe: Entire market (14 stocks)
-•	Number of possible pairs in stock universe: 91
-•	Results:
-o	Number of cointegrated pairs found within clusters: 0
-o	Fraction (on average) of pairs tested that cointegrated: 0
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (14 stocks)
+*	Number of possible pairs in stock universe: 91
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 0
+  *	Fraction (on average) of pairs tested that cointegrated: 0
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:  0% (0 pairs)
 
 **Utilities**
-•	Stock universe: Entire market (57 stocks)
-•	Number of possible pairs in stock universe: 1,596
-•	Results:
-o	Number of cointegrated pairs found within clusters: 26
-o	Fraction (on average) of pairs tested that cointegrated: 0.022817
-o	Percentage of partially correlated pairs that cointegrated 
+*	Stock universe: Entire market (57 stocks)
+*	Number of possible pairs in stock universe: 1,596
+*	Results:
+  *	Number of cointegrated pairs found within clusters: 26
+  *	Fraction (on average) of pairs tested that cointegrated: 0.022817
+  *	Percentage of partially correlated pairs that cointegrated 
 (from most restrictive to less restrictive):
  	With a minimum partial correlation of 0.4:  0% (0 pairs)
 
