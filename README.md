@@ -1,5 +1,5 @@
 
-# Using Affinity Propagation, DBSCAN and Partial Correlations to Identify Cointegrated Pairs of Stocks
+# Udacity Capstone Project: Identifying Cointegrated Pairs of Stocks with Clustering and Partial Correlations
 
 ## Domain Background
 
