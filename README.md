@@ -1,5 +1,6 @@
 
-# Udacity Capstone Project: Identifying Cointegrated Pairs of Stocks with Clustering and Partial Correlations
+# Identifying Cointegrated Pairs of Stocks
+Contrast of Affinity Propagation and Partial Correlations VS. DBSCAN and PCA Dimension Reduction 
 
 ## Domain Background
 
