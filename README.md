@@ -154,6 +154,7 @@ Notice that in each case the stocks (dots) are both close together in 2D embedde
 
 However, when the minimum partial correlation is set to 0.1, yielding 17 cointegrated pairs, we get a wider variety of visual representations:
 
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/PartialCorrelation0.1.jpg)
  
 Although some pairs, such as ES-NU, CMCSK-CMCSA, WAG-WBA and DWSN-TGE exhibit the same pattern of simultaneous closeness and edge thickness, some pairs such as IP-WY are close yet they are connected by a thin edge. Furthermore, ONTY and AMCC are not located close to one another yet they are a cointegrated pair and are connected by an edge of medium thickness. 
 
