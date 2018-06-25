@@ -1,7 +1,9 @@
 
-# Domain Background
+# Using Affinity Propagation, DBSCAN and Partial Correlations to Identify Cointegrated Pairs of Stocks
 
-## Theory behind pairs trading
+## Domain Background
+
+### Theory behind pairs trading
 
 One of the key objectives of most stock investors is “finding alpha”, which could be described as the search for tendencies in stocks that one can successfully bet on without being misled by temporary trends in the market as a whole, colloquially referred to as “beta”. Market beta is notorious for misleading investors. If one makes a stock purchase and the price of the stock goes up, it is natural to assume that the investment was a good one, but if the entire market is trending upwards, on average most everyone in the market will reap a benefit, whether they have made wise investments or not. And sooner or later the market will trend downward, and all those who have made investments that are insufficiently market-neutral will lose. Smart investors attempt to avoid this pitfall by finding investments that are rich in “alpha” yet “beta-neutral”. They usually do this by going long on some stocks and short on others. If the entire market goes up, they are protected by their long bets. If the entire market goes down, they are protected by their short bets. 
 
@@ -15,7 +17,7 @@ This strategy is market-neutral, because its success depends only on the relativ
 
 This project addresses the challenge of how to find cointegrated pairs for a pairs trading. 
 
-# Datasets and Inputs
+## Datasets and Inputs
 
 The dataset I use consists of Wiki Prices data made available to the public for free by Quandl and Intrinio stock fundamentals data made available to me as an Intrinio subscriber. 
 
@@ -31,7 +33,7 @@ The period 2000 – 2008 yields 2,923 timestamped observations and 2485 stocks. 
 
 After filtering the data I was left with 2009 daily returns for 1,797 stocks.
 
-# Problem Statement
+## Problem Statement
 
 When trying to find potentially cointegratable pairs, one confronts the following problems:
 
@@ -42,32 +44,32 @@ When trying to find potentially cointegratable pairs, one confronts the followin
 5.	Problem of multiple comparisons bias: Finally, since tests for cointegration like Augmented Dickey Fuller use a significance level (typically of 5%) to measure whether a pair should be considered mean reverting or not, these tests suffer from multiple comparisons bias. This problem arises when you run such a large number of tests that on average your tests will produce false positives simply by virtue of the fact that tests of pairs that are not cointegrated will still satisfy the significance level 5% of the time. If you run 10,000 tests, for example, that could yield as many as 500 false positives, and if there are very few cases of real cointegration, the false positives could actually dominate the results.
 How do we solve these problems?
 
-# Solution Statement
+## Solution Statement
 
 Here is how I intend to address the problems indicated in the previous section.
 Solution to the problem of multiple comparisons bias
 
 If it weren’t for the problem of multiple comparisons bias, we could do a brute force cointegration test of every pair in the market. To avoid this problem we must forego easy brute force approaches and reduce the number of tests. The technique we use to restrict the number of cointegration tests is clustering. We will only test pairs within clusters, not pairs that straddle clusters. Additionally, we will use partial correlations to add an extra layer of restrictiveness by limiting our cointegration tests to pairs within the same cluster that also exhibit strong partial correlations to one another.  
 
-## Solution to the problem of confounding variables
+### Solution to the problem of confounding variables
 
 One can get an idea of how much two stocks covary by looking at the covariance matrix, but if two stocks covary because of mutual dependence on a confounding variable, the covariance matrix will not reveal it. However, the precision matrix might. The precision matrix is proportional to the partial correlations matrix and partial correlations. These numbers can provide a measure of how correlated two stocks are, independently of their relationship to all other stocks. They constitute a kind of ceteris paribus correlation, i.e. the correlation of the two stocks all other influences being equal, which by its nature excludes the influence of confounding variables. 
 
 Thus in addition to clustering, we will use conditional correlation to measure how suitable pairs are to be tested for cointegration. This should both increase the percentage of successful cointegration tests by restricting tests to the most interesting candidates as well as help us devise pair trading strategies that are beta neutral.
 
-## Solution to the problem of overused sector pairs:
+### Solution to the problem of overused sector pairs:
 
 Recall that restricting the search for pairs to industry sectors has certain advantages. Pairs within a sector are more likely to cointegrate and fewer tests are necessary, so cointegration tests are less subject to multiple comparisons bias. But as indicated earlier, the downside of restricting the search to industry sectors is that a large number of investors already use this strategy, which means it is a crowded field and most trading profits have been arbitraged away. So instead of using sectors, I will apply clustering techniques to limit the number of tests yet apply them to the entire market with a view to finding pair candidates that straddle sector boundaries. 
 
 I will use sector-wide pair searches for benchmarking purposes only. This should show us what level of success we could expect to achieve with sector-wide searches then allow us to compare that success with the success we achieve when tackling all the stocks in the market at once.
 
-## Solution to the problem of large numbers of features:
+### Solution to the problem of large numbers of features:
 
 Large numbers of features can lead to ill-conditioned empirical covariance matrices, and even when there are more observations than features, the empirical covariance matrix can be ill-conditioned if features are highly correlated. Thus we have two objectives in this project that are in tension with one another: (1) the search for cointegrated pairs across a large number of stocks that and (2) the need for a well-conditioned empirical covariance matrix.
 
 We address this problem by regularizing the covariance matrix calculation using Graph-Lasso, which is the approach employed in the SciKit Learn project Visualizing Stock Market Structure. 
 
-# Evaluation Metrics 
+## Evaluation Metrics 
 
 We need a metric to measure the success of the techniques we use to narrow the scope of our search for cointegrated pairs. One measure of that success is the number of cointegrated pairs we find divided by the number of pairs tested. The higher the percentage of successful cointegrations, the more effective our methods of choosing candidate pairs.
 Benchmark Model
@@ -86,7 +88,7 @@ When used in this way, PCA has aspects in common with other techniques that can 
 
 With only 50 features, ill-conditioned covariance matrices cease to pose a problem. After doing dimension reduction, the Larkin project runs the DBSCAN to cluster stocks using principal components concatenated with stock fundamentals data as inputs instead of using the raw price data as input. The SciKit Learn project also does dimension reduction using Locally Linear Embedding, but only for purposes of 2D visualization, not as part of the clustering algorithm. 
 
-# Project Design
+## Project Design
 
 Download project and all its data here.
 
@@ -99,9 +101,9 @@ The latter notebook consists of:
 *	a section that does analysis on data for the entire market followed by 
 *	a section that does analysis on data for different industry sectors
 
-# Project Results and Conclusions
+## Project Results and Conclusions
 
-## Conclusions
+### Conclusions
 
 Here are the results of the project according to approach used.
 
@@ -134,7 +136,7 @@ Since our goal is to achieve cointegration success comparable with a strategy th
 
 The second benchmark was Jonathan Larkin’s approach, which runs a DBSCAN clustering algorithm on principal components and fundamentals data derived from 1,101 stocks. It produced 1,906 cointegrated pairs, a much larger number than produced using our Project Strategy. However, the rate of cointegration success at 5.9% was very low. Our approach produces results that are clearly superior to those produced by Larkin’s algorithm. 
 
-# Visualizations
+## Visualizations
 
 The project visualizations attempt to capture three aspects of the data:
 *	Color of stocks (dots): cluster membership
@@ -156,7 +158,7 @@ Although some pairs, such as ES-NU, CMCSK-CMCSA, WAG-WBA and DWSN-TGE exhibit th
 It is possible that the latter sort of pair would be a better investment, because a successful pair strategy does not ultimately depend on correlation, but rather on mean reversion. In theory, a pair that is poorly correlated might still be ideally cointegrated.
 
 
-## Suggested Improvements
+### Suggested Improvements
 
 As indicated in the Data Exploration section, I was able to identify some stocks whose price plummeted in year 2,000 at the beginning of the time period covered by the dataset. It would be a mistake to treat every price collapse as an outlier. One could lose valid information that way. However, a quick check confirms that there was a major market regime change in March of 2,000 due to the collapse of the so-called “Dot-com bubble”. I should not have used data from the Spring of 2,000.
 
@@ -164,7 +166,7 @@ This study is intended to be a preliminary test of the use of clustering algorit
 
 Furthermore, with a change in dataset sive, the advantage of Graph Lasso over PCA would have to be reexamined. In general, changing any of the parameters used can affect what will prove to be the optimal strategy.
 
-## Result Data
+### Result Data
 
 **Project Strategy**:
 
