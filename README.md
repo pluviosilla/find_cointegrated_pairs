@@ -45,33 +45,33 @@ In the search for outliers, one can't just take very large values as proof of an
 
 In the time period covered by the dataset I am using, the three highest share prices were as follows:
 
-<img src="GlobalMaximums.jpg" alt="drawing" width="400px"/>
+<img src="GlobalMaximums.jpg" alt="drawing" width="250px"/>
 
 I plot these three stocks to show that the high prices belong to a trend and therefore make sense (i.e. they are not just noise or garbage values).
 
-<img src="DataExplore1.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore1.jpg" alt="drawing" width="250px"/>
 
-<img src="DataExplore2.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore2.jpg" alt="drawing" width="250px"/>
 
-<img src="DataExplore3.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore3.jpg" alt="drawing" width="250px"/>
 
 A better measure would be which stocks deviate from their mean by an extraordinary amount. Again, the “mean” of a time series is not particularly informative when the time series is not stationary, but I only found 5 stocks that deviated by more than 10 standard deviations from the mean, so they are good candidates to check for outlier values. 
 
-<img src="DataExplore4.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore4.jpg" alt="drawing" width="250px"/>
 
 Scatter plots of these five stocks:
 
-<img src="DataExplore5.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore5.jpg" alt="drawing" width="250px"/>
 
-<img src="DataExplore6.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore6.jpg" alt="drawing" width="250px"/>
 
 The second plot suggests that there may be some outliers in year 2,000, but if you print the 20 highest values for CRRS, they suggest that maybe CRRS just underwent some extreme, short-lived volatility. 
 
-<img src="DataExplore7.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore7.jpg" alt="drawing" width="250px"/>
 
-<img src="DataExplore8.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore8.jpg" alt="drawing" width="250px"/>
 
-<img src="DataExplore9.jpg" alt="drawing" width="200px"/>
+<img src="DataExplore9.jpg" alt="drawing" width="250px"/>
 
 These charts indicate that a number of stocks suffered a violent price decline in the year 2,000, which suggests not so much outliers as a market regime change in the first year of the dataset. Therefore, one avenue I could pursue is to truncate the first year of the dataset and see if that leads to improved performance.
 
