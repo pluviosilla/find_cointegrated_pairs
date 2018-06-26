@@ -49,9 +49,9 @@ In the time period covered by the dataset I am using, the three highest share pr
 
 I plot these three stocks to show that the high prices belong to a trend and therefore make sense (i.e. they are not just noise or garbage values).
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore1.jpg)
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore1.jpg =100X20)
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore2.jpg)
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore2.jpg =200x100)
 
 ![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore3.jpg)
 
