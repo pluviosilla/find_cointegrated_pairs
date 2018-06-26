@@ -191,7 +191,7 @@ There is no way of knowing exactly why LLE would judge two stock price time seri
 
 This is the visualization produced when the minimum partial correlation is set to 0.4, yielding 5 cointegrated pairs.
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/PartialCorrelation0.4.jpg)
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/PartialCorrelation0.4.jpg =250x)
 
 Notice that in each case the stocks (dots) are both close together in 2D embedded space and connected by a thick edge. This suggests that proximity in 2D space corresponds somewhat to the degree of partial correlation indicated by the edge thickness.
 
