@@ -34,6 +34,49 @@ The period 2000 – 2008 yields 2,923 timestamped observations and 2485 stocks. 
 
 After filtering the data I was left with 2009 daily returns for 1,797 stocks.
 
+## Data Exploration
+
+Identifying Outliers
+
+In the search for outliers, one can't just take very large values as proof of an outlier, for the following reasons:
+
+* Some stocks have shockingly high stock prices (BRK_A, Berkshire Hathaway, for example, has a share price above $200,000 USD.)
+* Stock market price series are usually not stationary. They trend upward due to inflation and other factors, and so over time the max value can easily exceed the mean by a factor of many standard deviations.
+
+In the time period covered by the dataset I am using, the three highest share prices were as follows:
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/GlobalMaximums.jpg)
+
+I plot these three stocks to show that the high prices belong to a trend and therefore make sense (i.e. they are not just noise or garbage values).
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore1.jpg)
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore2.jpg)
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore3.jpg)
+
+A better measure would be which stocks deviate from their mean by an extraordinary amount. Again, the “mean” of a time series is not particularly informative when the time series is not stationary, but I only found 5 stocks that deviated by more than 10 standard deviations from the mean, so they are good candidates to check for outlier values. 
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore4.jpg)
+
+Scatter plots of these five stocks:
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore5.jpg)
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore6.jpg)
+
+The second plot suggests that there may be some outliers in year 2,000, but if you print the 20 highest values for CRRS, they suggest that maybe CRRS just underwent some extreme, short-lived volatility. 
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore7.jpg)
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore8.jpg)
+
+![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore9.jpg)
+
+
+These charts indicate that a number of stocks suffered a violent price decline in the year 2,000, which suggests not so much outliers as a market regime change in the first year of the dataset. Therefore, one avenue I could pursue is to truncate the first year of the dataset and see if that leads to improved performance.
+
+
 ## Problem Statement
 
 When trying to find potentially cointegratable pairs, one confronts the following problems:
