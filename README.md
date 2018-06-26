@@ -45,34 +45,33 @@ In the search for outliers, one can't just take very large values as proof of an
 
 In the time period covered by the dataset I am using, the three highest share prices were as follows:
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/GlobalMaximums.jpg)
+<img src="GlobalMaximums.jpg" alt="drawing" width="400px"/>
 
 I plot these three stocks to show that the high prices belong to a trend and therefore make sense (i.e. they are not just noise or garbage values).
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore1.jpg =100X20)
+<img src="DataExplore1.jpg" alt="drawing" width="400px"/>
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore2.jpg =200x100)
+<img src="DataExplore2.jpg" alt="drawing" width="400px"/>
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore3.jpg)
+<img src="DataExplore3.jpg" alt="drawing" width="400px"/>
 
 A better measure would be which stocks deviate from their mean by an extraordinary amount. Again, the “mean” of a time series is not particularly informative when the time series is not stationary, but I only found 5 stocks that deviated by more than 10 standard deviations from the mean, so they are good candidates to check for outlier values. 
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore4.jpg)
+<img src="DataExplore4.jpg" alt="drawing" width="400px"/>
 
 Scatter plots of these five stocks:
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore5.jpg)
+<img src="DataExplore5.jpg" alt="drawing" width="400px"/>
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore6.jpg)
+<img src="DataExplore6.jpg" alt="drawing" width="400px"/>
 
 The second plot suggests that there may be some outliers in year 2,000, but if you print the 20 highest values for CRRS, they suggest that maybe CRRS just underwent some extreme, short-lived volatility. 
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore7.jpg)
+<img src="DataExplore7.jpg" alt="drawing" width="400px"/>
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore8.jpg)
+<img src="DataExplore8.jpg" alt="drawing" width="400px"/>
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/DataExplore9.jpg)
-
+<img src="DataExplore9.jpg" alt="drawing" width="400px"/>
 
 These charts indicate that a number of stocks suffered a violent price decline in the year 2,000, which suggests not so much outliers as a market regime change in the first year of the dataset. Therefore, one avenue I could pursue is to truncate the first year of the dataset and see if that leads to improved performance.
 
@@ -191,15 +190,14 @@ There is no way of knowing exactly why LLE would judge two stock price time seri
 
 This is the visualization produced when the minimum partial correlation is set to 0.4, yielding 5 cointegrated pairs.
 
-<img src="PartialCorrelation0.4.jpg" alt="drawing" width="600px"/>
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/PartialCorrelation0.4.jpg)
+<img src="PartialCorrelation0.4.jpg" alt="drawing" width="400px"/>
 
 Notice that in each case the stocks (dots) are both close together in 2D embedded space and connected by a thick edge. This suggests that proximity in 2D space corresponds somewhat to the degree of partial correlation indicated by the edge thickness.
 
 However, when the minimum partial correlation is set to 0.1, yielding 17 cointegrated pairs, we get a wider variety of visual representations:
 
-![alt text](https://github.com/pluviosilla/find_cointegrated_pairs/blob/master/PartialCorrelation0.1.jpg)
- 
+<img src="PartialCorrelation0.1.jpg" alt="drawing" width="400px"/>
+
 Although some pairs, such as ES-NU, CMCSK-CMCSA, WAG-WBA and DWSN-TGE exhibit the same pattern of simultaneous closeness and edge thickness, some pairs such as IP-WY are close yet they are connected by a thin edge. Furthermore, ONTY and AMCC are not located close to one another yet they are a cointegrated pair and are connected by an edge of medium thickness. 
 
 It is possible that the latter sort of pair would be a better investment, because a successful pair strategy does not ultimately depend on correlation, but rather on mean reversion. In theory, a pair that is poorly correlated might still be ideally cointegrated.
